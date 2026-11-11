@@ -1,0 +1,940 @@
+/* =========================================================
+   FRUTIGER AERO — css/style.css (versi lengkap + animasi)
+   Tema Aero: Glassmorphism, Gelembung, Alam, Skylines & Kolam
+   ========================================================= */
+
+:root {
+  --sky: #5ec8f2; --sky-soft: #bfeaff; --grass: #7ed957;
+  --aqua: #1aa7e0; --text: #0a4a78; --link: #0872b5;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --glass: linear-gradient(180deg, rgba(255,255,255,.82) 0%, rgba(255,255,255,.42) 48%, rgba(255,255,255,.58) 48.5%, rgba(255,255,255,.38) 100%);
+  --edge: 1px solid rgba(255,255,255,.85);
+  --lift: 0 10px 28px rgba(10,100,160,.28), inset 0 1px 0 #fff;
+  --lift-hi: 0 18px 38px rgba(10,100,160,.38), inset 0 1px 0 #fff;
+  --font: "Frutiger", "Segoe UI", "Trebuchet MS", "Myriad Pro", system-ui, sans-serif;
+  /* gel: warna berubah tajam di 50% -> 51% */
+  --gel-blue:  linear-gradient(180deg, #7fdcff 0%, #1aa7e0 50%, #0f8bc7 51%, #4cc3f2 100%);
+  --gel-green: linear-gradient(180deg, #a8f08a 0%, #5cc83a 50%, #3fae22 51%, #7fe05a 100%);
+  --gel-white: linear-gradient(180deg, #ffffff 0%, #d6f1ff 50%, #a6def9 51%, #e0f6ff 100%);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  margin: 0; font-family: var(--font); color: var(--text); line-height: 1.65;
+  text-shadow: 0 1px 0 rgba(255,255,255,.7);
+  background:
+    radial-gradient(ellipse 130% 35% at 50% 110%, var(--grass) 0%, rgba(126,217,87,0) 70%),
+    linear-gradient(180deg, var(--sky) 0%, var(--sky-soft) 100%);
+  background-attachment: fixed;
+  transition: background .4s ease, color .4s ease;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--link); }
+h1, h2, h3, h4 { margin: 0 0 .5rem; color: var(--text); line-height: 1.2; text-shadow: 0 1px 0 rgba(255,255,255,.9); }
+p { margin: 0 0 1rem; }
+ul { list-style: none; margin: 0; padding: 0; }
+.container { width: min(1100px, 100% - 2.5rem); margin: 0 auto; }
+main, .footer, .navbar { position: relative; z-index: 1; }
+.hero__role:empty, .hero__meta:empty, .section__head:empty { display: none; }
+
+/* =========================================================
+   GELEMBUNG MELAYANG (4 elemen .corner-mark + 2 pseudo-element)
+   ========================================================= */
+.corner-mark, body::before, body::after {
+  position: fixed; z-index: 0; pointer-events: none; border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 26%, rgba(255,255,255,.95) 0 7%, rgba(255,255,255,0) 22%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.04) 55%, rgba(255,255,255,.4) 100%);
+  border: 1px solid rgba(255,255,255,.7);
+  box-shadow: inset 0 -10px 22px rgba(255,255,255,.35), 0 0 24px rgba(255,255,255,.45);
+  animation: floatBubble var(--dur, 10s) ease-in-out infinite alternate;
+}
+body::before, body::after { content: ""; }
+.corner-tl { top: 12%; left: 3%;   width: 140px; height: 140px; --dur: 11s; }
+.corner-tr { top: 30%; right: 4%;  width: 90px;  height: 90px;  --dur: 8s;  animation-delay: -3s; }
+.corner-bl { bottom: 24%; left: 7%; width: 70px; height: 70px;  --dur: 10s; animation-delay: -5s; }
+.corner-br { bottom: 8%; right: 9%; width: 160px; height: 160px; --dur: 13s; animation-delay: -2s; }
+body::before { top: 60%; left: 42%; width: 54px; height: 54px; --dur: 9s; animation-delay: -4s; }
+body::after  { top: 8%;  right: 36%; width: 44px; height: 44px; --dur: 12s; animation-delay: -6s; }
+
+@keyframes floatBubble {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(14px, -28px, 0) rotate(3deg); }
+  100% { transform: translate3d(-12px, -52px, 0) rotate(-4deg); }
+}
+
+/* =========================================================
+   KILAU SAPUAN (::after) + MEMBAL (spring) UNTUK TOMBOL & KARTU
+   ========================================================= */
+.btn, .back-to-top, .nav__link,
+.biodata-card, .about__panel, .edu-item, .aboutme-grid, .hobi-card, .skill-card, .contact-form, .contact-info {
+  position: relative; overflow: hidden;
+}
+.btn::after, .back-to-top::after, .nav__link::after,
+.biodata-card::after, .about__panel::after, .edu-item::after, .aboutme-grid::after, .hobi-card::after,
+.skill-card::after, .contact-form::after, .contact-info::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -80%; width: 45%;
+  background: linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.75) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-22deg); transition: left .75s ease; pointer-events: none;
+}
+.btn:hover::after, .back-to-top:hover::after, .nav__link:hover::after,
+.biodata-card:hover::after, .about__panel:hover::after, .edu-item:hover::after, .aboutme-grid:hover::after,
+.hobi-card:hover::after, .skill-card:hover::after, .contact-form:hover::after, .contact-info:hover::after {
+  left: 135%;
+}
+
+/* ---------- NAVBAR ---------- */
+.navbar {
+  position: sticky; top: 0; z-index: 50; background: var(--glass); border-bottom: var(--edge);
+  backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 6px 20px rgba(10,100,160,.2), inset 0 1px 0 #fff;
+  transition: background .35s, border-color .35s;
+}
+.navbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem 0; }
+.logo { text-decoration: none; font-size: 1.3rem; font-weight: 700; color: var(--text); }
+.logo .accent { color: #3fae22; }
+.nav__list { display: flex; align-items: center; gap: .4rem; }
+.nav__link {
+  display: inline-flex; align-items: center; gap: .35rem; padding: .45rem 1.05rem; border-radius: 999px;
+  text-decoration: none; font-weight: 600; color: var(--text); cursor: pointer;
+  transition: transform .45s var(--spring), background .25s, box-shadow .3s, color .25s;
+}
+.nav__link:hover { background: rgba(255,255,255,.7); transform: translateY(-2px) scale(1.06); }
+.nav__link:active { transform: translateY(2px) scale(.96); }
+.nav__link.active-link {
+  color: #fff; background: var(--gel-blue); text-shadow: 0 1px 2px rgba(0,60,100,.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(10,100,160,.4);
+  animation: pulseBlue 2.4s ease-in-out infinite;
+}
+.theme-toggle {
+  background: var(--gel-white); border: var(--edge); box-shadow: var(--lift);
+}
+.theme-icon { font-size: 1.05rem; }
+
+.menu-toggle {
+  display: none; width: 2.6rem; height: 2.6rem; padding: 0; border-radius: 50%; border: var(--edge);
+  background: var(--gel-white); color: var(--text); font-size: 1.2rem; cursor: pointer; box-shadow: var(--lift);
+  transition: transform .45s var(--spring);
+}
+.menu-toggle:hover { transform: scale(1.1); }
+.menu-toggle:active { transform: translateY(2px) scale(.94); }
+.menu-toggle.is-active { background: var(--gel-green); color: #fff; animation: pulseGreen 2.4s ease-in-out infinite; }
+
+/* ---------- TOMBOL GEL (KAPSUL) ---------- */
+.btn, .back-to-top {
+  display: inline-block; font-family: inherit; font-size: 1rem; font-weight: 600; text-decoration: none; cursor: pointer;
+  padding: .7rem 1.6rem; border-radius: 999px; border: var(--edge); color: var(--text); background: var(--gel-white);
+  box-shadow: inset 0 1px 0 #fff, 0 4px 10px rgba(10,100,160,.3);
+  transition: transform .45s var(--spring), box-shadow .3s, filter .2s;
+}
+.btn:hover, .back-to-top:hover { transform: translateY(-3px) scale(1.05); box-shadow: inset 0 1px 0 #fff, 0 10px 18px rgba(10,100,160,.38); filter: brightness(1.05); }
+.btn:active, .back-to-top:active { transform: translateY(2px) scale(.97); box-shadow: inset 0 2px 4px rgba(10,100,160,.35), 0 1px 3px rgba(10,100,160,.3); transition-duration: .12s; }
+.btn--primary { color: #fff; background: var(--gel-green); text-shadow: 0 1px 2px rgba(0,80,0,.55); }
+.btn--ghost { background: var(--gel-white); }
+.btn--full { width: 100%; }
+
+/* ---------- HERO ---------- */
+.hero { padding: 5rem 0 4rem; }
+.hero__grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 3rem; align-items: center; }
+.eyebrow {
+  display: inline-block; margin-bottom: 1rem; padding: .3rem 1.1rem; border-radius: 999px; font-weight: 600; color: var(--text);
+  background: var(--glass); border: var(--edge); box-shadow: var(--lift); backdrop-filter: blur(14px) saturate(1.4);
+}
+.hero__title { font-size: clamp(2.2rem, 6vw, 3.8rem); }
+.hero__title .title { color: var(--link); }
+.hero__role { font-weight: 600; color: var(--link); margin-bottom: .8rem; }
+.hero__desc { font-size: 1.1rem; max-width: 54ch; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.5rem 0; }
+.hero__meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.hero__meta-num { font-size: 2rem; font-weight: 700; color: var(--link); text-shadow: 0 2px 0 #fff; }
+.title-block { justify-self: center; }
+.title-block__photo {
+  width: min(320px, 80vw); aspect-ratio: 1; border-radius: 50%; padding: 10px; overflow: hidden;
+  background: var(--glass); border: var(--edge);
+  box-shadow: 0 0 0 8px rgba(255,255,255,.35), 0 18px 40px rgba(10,100,160,.4), inset 0 2px 0 #fff;
+}
+.profile-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+/* ---------- SECTION ---------- */
+.section { padding: 4.5rem 0; }
+.section--alt { background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.12)); border-block: var(--edge); }
+.section__head { margin-bottom: 2rem; max-width: 62ch; }
+.section__title { font-size: clamp(1.7rem, 4vw, 2.4rem); }
+.about-block { margin-bottom: 3rem; }
+.about-block__title { display: flex; align-items: center; gap: .7rem; font-size: 1.4rem; margin-bottom: 1.2rem; }
+.about-block__num {
+  display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; color: #fff; font-size: 1rem;
+  background: var(--gel-blue); text-shadow: 0 1px 2px rgba(0,60,100,.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(10,100,160,.4);
+}
+
+/* ---------- PANEL KACA (Aero Glass) ---------- */
+.biodata-card, .about__panel, .edu-item, .aboutme-grid, .career-card, .hobi-card, .skill-card, .contact-form, .contact-info {
+  background: var(--glass); border: var(--edge); border-radius: 1.4rem; box-shadow: var(--lift);
+  backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  transition: transform .5s var(--spring), box-shadow .35s, opacity .7s ease, translate .7s ease, background .35s;
+}
+.biodata-card:hover, .about__panel:hover, .edu-item:hover, .aboutme-grid:hover, .career-card:hover, .hobi-card:hover,
+.skill-card:hover, .contact-info:hover { transform: translateY(-5px) scale(1.015); box-shadow: var(--lift-hi); }
+.career-card:active, .hobi-card:active, .skill-card:active, .edu-item:active { transform: translateY(2px) scale(.99); transition-duration: .12s; }
+
+/* ---------- TENTANG ---------- */
+.biodata-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; }
+.biodata-card, .about__panel { padding: 1.5rem; }
+.biodata-table { width: 100%; border-collapse: collapse; }
+.biodata-table th, .biodata-table td { padding: .55rem .4rem; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,.8); }
+.biodata-table th { width: 38%; font-weight: 700; }
+.about__panel-label { font-weight: 700; }
+.tool-grid { display: flex; flex-wrap: wrap; gap: .6rem; }
+.tool-chip {
+  padding: .4rem 1rem; border-radius: 999px; font-weight: 600; color: #fff; background: var(--gel-blue);
+  text-shadow: 0 1px 2px rgba(0,60,100,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(10,100,160,.3);
+  transition: transform .45s var(--spring);
+}
+.tool-chip:hover { transform: translateY(-3px) scale(1.1); }
+.tool-chip:active { transform: translateY(1px) scale(.95); }
+
+.edu-timeline { display: grid; gap: 1rem; }
+.edu-item { display: grid; grid-template-columns: 11rem 1fr; gap: 1.5rem; padding: 1.3rem 1.5rem 1.3rem 2.6rem; }
+.edu-item::before {
+  content: ""; position: absolute; left: 1rem; top: 1.6rem; width: 1rem; height: 1rem; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--aqua) 70%); box-shadow: 0 0 10px rgba(26,167,224,.8);
+}
+.edu-item__year { display: block; font-weight: 700; }
+.edu-item__level {
+  display: inline-block; margin-top: .3rem; padding: .1rem .8rem; border-radius: 999px; color: #fff; font-size: .85rem; font-weight: 600;
+  background: var(--gel-green); text-shadow: 0 1px 2px rgba(0,80,0,.55); animation: pulseGreen 3s ease-in-out infinite;
+}
+.edu-item__school { font-weight: 700; color: var(--link); margin-bottom: .3rem; }
+.edu-item__desc { margin: 0; }
+.aboutme-grid { padding: 1.8rem; }
+.aboutme-grid p:last-child { margin-bottom: 0; }
+
+/* ---------- TUJUAN KARIR ---------- */
+.career-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+.career-card { padding: 1.5rem; }
+.career-card__icon {
+  display: inline-grid; place-items: center; width: 2.8rem; height: 2.8rem; margin-bottom: .8rem; border-radius: 50%;
+  color: #fff; font-weight: 700; background: var(--gel-blue); text-shadow: 0 1px 2px rgba(0,60,100,.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 4px 10px rgba(10,100,160,.4);
+}
+
+/* ---------- KEAHLIAN ---------- */
+.skills__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.3rem; }
+.skill-card { padding: 1.5rem; }
+.skill-card__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.skill-card__code {
+  padding: .15rem .8rem; border-radius: 999px; font-weight: 700; font-size: .85rem; color: #fff;
+  background: var(--gel-blue); text-shadow: 0 1px 2px rgba(0,60,100,.55);
+}
+.skill-list { display: grid; gap: 1rem; }
+.skill-list__top { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: .3rem; }
+.bar {
+  height: 1.1rem; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.6); border: var(--edge);
+  box-shadow: inset 0 2px 5px rgba(10,100,160,.3);
+}
+.bar span {
+  display: block; width: 0; height: 100%; border-radius: 999px; background: var(--gel-green);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85); transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+}
+.bar span.is-visible { width: var(--value); }
+
+/* ---------- FOOTER ---------- */
+.footer {
+  padding: 3rem 0 1.5rem; color: #fff; text-shadow: 0 1px 2px rgba(0,40,70,.5);
+  background: linear-gradient(180deg, #2db4ee 0%, #0a6aa8 55%, #0a4a78 100%);
+  border-top: var(--edge); box-shadow: inset 0 2px 0 rgba(255,255,255,.5);
+}
+.footer h2, .footer h3 { color: #fff; }
+.footer a { color: #d8f5ff; }
+.footer__top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; }
+.footer__brand { max-width: 40ch; }
+.footer__social { display: flex; gap: 1rem; }
+.footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.4); }
+.footer__bottom p { margin: 0; }
+
+/* =========================================================
+   PULSE GLOW (lencana aktif & fokus)
+   ========================================================= */
+@keyframes pulseBlue {
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(10,100,160,.4), 0 0 0 0 rgba(26,167,224,.5); }
+  50%      { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(10,100,160,.4), 0 0 16px 5px rgba(26,167,224,.55); }
+}
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(40,140,20,.35), 0 0 0 0 rgba(126,217,87,.5); }
+  50%      { box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 3px 8px rgba(40,140,20,.35), 0 0 16px 5px rgba(126,217,87,.6); }
+}
+@keyframes pulseFocus {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(26,167,224,.55), 0 0 8px rgba(26,167,224,.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(126,217,87,.45), 0 0 18px rgba(26,167,224,.7); }
+}
+:focus-visible { outline: 3px solid #fff; outline-offset: 2px; animation: pulseFocus 1.6s ease-in-out infinite; }
+input:focus-visible, textarea:focus-visible { outline: none; }
+
+/* ---------- SCROLL REVEAL (translate agar tidak bentrok dengan hover) ---------- */
+[data-reveal] { opacity: 0; translate: 0 18px; }
+[data-reveal].is-visible { opacity: 1; translate: 0 0; }
+
+/* =========================================================
+   FRUTIGER AERO NATURE — LEAVES & SKY EFFECTS
+   ========================================================= */
+.nature-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---------- SUNLIGHT ---------- */
+.nature-sun {
+  position: absolute;
+  top: 12%;
+  right: 12%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,.95) 0%,
+    rgba(255,255,180,.65) 25%,
+    rgba(255,255,255,.15) 60%,
+    transparent 75%
+  );
+  filter: blur(5px);
+  animation: sunGlow 5s ease-in-out infinite alternate;
+}
+
+@keyframes sunGlow {
+  from { transform: scale(.95); opacity: .65; }
+  to   { transform: scale(1.15); opacity: 1; }
+}
+
+/* ---------- FLOATING CLOUDS ---------- */
+.nature-cloud {
+  position: absolute;
+  width: 150px;
+  height: 45px;
+  border-radius: 50px;
+  background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.35));
+  box-shadow: inset 0 5px 12px rgba(255,255,255,.9), 0 8px 20px rgba(255,255,255,.25);
+  filter: blur(1px);
+  animation: cloudFloat 18s ease-in-out infinite alternate;
+}
+.nature-cloud::before,
+.nature-cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+.nature-cloud::before {
+  width: 65px;
+  height: 65px;
+  top: -30px;
+  left: 25px;
+}
+.nature-cloud::after {
+  width: 85px;
+  height: 85px;
+  top: -42px;
+  right: 20px;
+}
+.cloud-one { top: 18%; left: 12%; }
+.cloud-two { top: 55%; right: 5%; transform: scale(.7); animation-delay: -7s; }
+
+@keyframes cloudFloat {
+  from { translate: -15px 0; }
+  to   { translate: 25px -12px; }
+}
+
+/* ---------- FLOATING LEAVES ---------- */
+.nature-leaf {
+  position: absolute;
+  display: block;
+  width: 42px;
+  height: 65px;
+  border-radius: 0 100% 0 100%;
+  background: linear-gradient(135deg, #d6ffb5 0%, #8ee45d 35%, #43b82e 70%, #198b36 100%);
+  border: 1px solid rgba(255,255,255,.75);
+  box-shadow:
+    inset 4px 4px 10px rgba(255,255,255,.65),
+    inset -5px -5px 12px rgba(0,100,20,.2),
+    0 8px 18px rgba(30,120,40,.25);
+  animation: leafFloat 9s ease-in-out infinite;
+}
+.nature-leaf::before {
+  content: ""; position: absolute; width: 1.5px; height: 75%; top: 12%; left: 50%;
+  background: rgba(255,255,255,.8); transform: rotate(-25deg);
+  box-shadow: 2px 0 3px rgba(30,100,20,.15);
+}
+.nature-leaf::after {
+  content: ""; position: absolute; width: 12px; height: 25px; top: 12%; left: 15%;
+  border-radius: 50%; background: rgba(255,255,255,.45); filter: blur(4px);
+}
+
+.leaf-one   { top: 15%; left: 8%;   --rotation: -25deg; animation-duration: 8s; }
+.leaf-two   { top: 38%; right: 10%; width: 30px; height: 48px; --rotation: 35deg; animation-delay: -3s; animation-duration: 11s; }
+.leaf-three { bottom: 22%; left: 15%; width: 35px; height: 55px; --rotation: 65deg; animation-delay: -5s; animation-duration: 10s; }
+.leaf-four  { top: 70%; right: 20%; width: 25px; height: 40px; --rotation: -40deg; animation-delay: -2s; animation-duration: 12s; }
+.leaf-five  { top: 25%; left: 75%; width: 28px; height: 45px; --rotation: 15deg; animation-delay: -6s; }
+.leaf-six   { bottom: 12%; right: 8%; width: 38px; height: 60px; --rotation: -65deg; animation-delay: -4s; }
+
+@keyframes leafFloat {
+  0%   { transform: translate3d(0, 0, 0) rotate(var(--rotation, 0deg)); }
+  25%  { transform: translate3d(15px, -20px, 0) rotate(calc(var(--rotation, 0deg) + 15deg)); }
+  50%  { transform: translate3d(-10px, -40px, 0) rotate(calc(var(--rotation, 0deg) - 10deg)); }
+  75%  { transform: translate3d(20px, -20px, 0) rotate(calc(var(--rotation, 0deg) + 20deg)); }
+  100% { transform: translate3d(0, 0, 0) rotate(var(--rotation, 0deg)); }
+}
+
+/* ---------- NATURE SPARKLES ---------- */
+.nature-sparkle {
+  position: absolute; color: #fff; font-size: 25px;
+  text-shadow: 0 0 8px #fff, 0 0 18px #b8f5ff, 0 0 25px #65d9ff;
+  animation: sparkle 3s ease-in-out infinite alternate;
+}
+.sparkle-one   { top: 30%; left: 25%; }
+.sparkle-two   { top: 65%; right: 30%; animation-delay: -1s; }
+.sparkle-three { top: 12%; right: 35%; animation-delay: -2s; }
+
+@keyframes sparkle {
+  from { opacity: .3; transform: scale(.7) rotate(0deg); }
+  to   { opacity: 1;  transform: scale(1.3) rotate(35deg); }
+}
+
+/* =========================================================
+   FRUTIGER AERO — FUTURISTIC GLASS CITY
+   ========================================================= */
+.aero-city {
+  position: fixed; z-index: 0; bottom: 0; left: 0; width: 100%; height: 290px;
+  pointer-events: none; overflow: hidden;
+  background: linear-gradient(180deg, transparent 0%, rgba(151,226,255,.10) 35%, rgba(56,176,221,.22) 100%);
+  opacity: .8;
+}
+.city-skyline {
+  position: absolute; bottom: 0; width: 100%; height: 220px;
+  display: flex; align-items: end; justify-content: space-around; gap: 5px;
+  filter: drop-shadow(0 -5px 15px rgba(255,255,255,.3));
+}
+.city-skyline span {
+  position: relative; display: block; width: 10%; height: var(--building-height, 130px);
+  border: 1px solid rgba(255,255,255,.7); border-bottom: none; border-radius: 12px 12px 0 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 17px, rgba(255,255,255,.4) 18px 20px),
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(255,255,255,.45) 24px 26px),
+    linear-gradient(135deg, rgba(255,255,255,.65), rgba(75,190,240,.3), rgba(20,125,190,.5));
+  box-shadow: inset 5px 0 15px rgba(255,255,255,.4), inset -5px 0 12px rgba(0,100,180,.12), 0 0 20px rgba(255,255,255,.2);
+}
+.city-skyline span:nth-child(1) { --building-height: 100px; border-radius: 18px 18px 0 0; }
+.city-skyline span:nth-child(2) { --building-height: 165px; width: 12%; }
+.city-skyline span:nth-child(3) { --building-height: 125px; }
+.city-skyline span:nth-child(4) { --building-height: 200px; width: 13%; border-radius: 45% 45% 0 0; }
+.city-skyline span:nth-child(5) { --building-height: 145px; }
+.city-skyline span:nth-child(6) { --building-height: 180px; width: 12%; }
+.city-skyline span:nth-child(7) { --building-height: 115px; }
+.city-skyline span:nth-child(8) { --building-height: 155px; }
+.city-skyline span::after {
+  content: ""; position: absolute; top: 0; left: 15%; width: 20%; height: 100%;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), transparent); filter: blur(5px);
+}
+
+/* ===== HOBI & KESUKAAN ===== */
+#hobby {
+  --hobby-bg: var(--glass);
+  --hobby-bg-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.54) 48%, rgba(255, 255, 255, 0.68) 48.5%, rgba(255, 255, 255, 0.48) 100%);
+  --hobby-border: rgba(255, 255, 255, 0.85);
+  --hobby-border-hover: #ffffff;
+  --hobby-shadow: var(--lift);
+  --hobby-shadow-hover: var(--lift-hi);
+  --hobby-text: var(--text);
+  --hobby-muted: var(--text);
+  --hobby-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  --hobby-icon-bg: var(--gel-white);
+  --hobby-icon-border: rgba(255, 255, 255, 0.85);
+  --hobby-icon-shadow: inset 0 1px 0 #ffffff, 0 4px 12px rgba(10, 100, 160, 0.25);
+  --hobby-chip-bg: var(--gel-blue);
+  --hobby-chip-color: #ffffff;
+  --hobby-chip-border: rgba(255, 255, 255, 0.85);
+  --hobby-chip-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 3px 8px rgba(10, 100, 160, 0.3);
+  --hobby-chip-shadow-hover: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 6px 14px rgba(10, 100, 160, 0.4);
+  --hobby-chip-text-shadow: 0 1px 2px rgba(0, 60, 100, 0.55);
+}
+
+body.dark-mode #hobby {
+  --hobby-bg: linear-gradient(180deg, rgba(10, 37, 68, 0.75) 0%, rgba(6, 22, 42, 0.65) 100%);
+  --hobby-bg-hover: rgba(16, 32, 60, 0.82);
+  --hobby-border: rgba(120, 200, 255, 0.25);
+  --hobby-border-hover: rgba(120, 220, 255, 0.6);
+  --hobby-shadow: 0 12px 30px rgba(0, 10, 25, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --hobby-shadow-hover: 0 14px 34px rgba(0, 0, 0, 0.55), 0 0 22px rgba(0, 200, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --hobby-text: #e6f4ff;
+  --hobby-muted: #9bb7d1;
+  --hobby-text-shadow: 0 0 12px rgba(94, 200, 242, 0.45), 0 2px 4px rgba(0, 0, 0, 0.6);
+  --hobby-icon-bg: linear-gradient(145deg, #1b3a63, #0b1a33);
+  --hobby-icon-border: rgba(120, 200, 255, 0.25);
+  --hobby-icon-shadow: 0 0 14px rgba(0, 200, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --hobby-chip-bg: rgba(10, 20, 40, 0.65);
+  --hobby-chip-color: #e6f4ff;
+  --hobby-chip-border: rgba(120, 200, 255, 0.25);
+  --hobby-chip-shadow: 0 0 10px rgba(0, 200, 255, 0.15);
+  --hobby-chip-shadow-hover: 0 0 16px rgba(0, 200, 255, 0.35);
+  --hobby-chip-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.hobby-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.8rem;
+}
+
+.hobby-card {
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: var(--hobby-bg);
+  border: 1px solid var(--hobby-border);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: var(--hobby-shadow);
+  transition: transform 0.3s ease, box-shadow 0.35s ease,
+              border-color 0.35s ease, background 0.35s ease;
+}
+
+.hobby-card:hover {
+  transform: translateY(-6px);
+  background: var(--hobby-bg-hover);
+  border-color: var(--hobby-border-hover);
+  box-shadow: var(--hobby-shadow-hover);
+}
+
+.hobby-card__icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.9rem;
+  font-size: 1.6rem;
+  border-radius: 50%;
+  background: var(--hobby-icon-bg);
+  border: 1px solid var(--hobby-icon-border);
+  box-shadow: var(--hobby-icon-shadow);
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+#hobby .hobby-card h4 {
+  margin-bottom: 0.4rem;
+  color: var(--hobby-text);
+  text-shadow: var(--hobby-text-shadow);
+}
+
+.hobby-card p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--hobby-muted);
+}
+
+.hobby-fav-label {
+  margin-bottom: 0.8rem;
+  color: var(--hobby-text);
+  text-shadow: var(--hobby-text-shadow);
+}
+
+/* Chip estetika favorit adaptif (Day & Night Mode) */
+#hobby .tool-chip {
+  color: var(--hobby-chip-color);
+  background: var(--hobby-chip-bg);
+  border: 1px solid var(--hobby-chip-border);
+  box-shadow: var(--hobby-chip-shadow);
+  text-shadow: var(--hobby-chip-text-shadow);
+  transition: transform 0.45s var(--spring), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
+}
+
+#hobby .tool-chip:hover {
+  border-color: var(--hobby-border-hover);
+  box-shadow: var(--hobby-chip-shadow-hover);
+}
+
+/* =========================================================
+   AQUATIC GLASS POND (Kolam Kaca di Belakang Konten / Background)
+   ========================================================= */
+.aero-pond {
+  position: fixed;
+  z-index: 0; /* Di belakang konten utama sebagai elemen background */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 185px;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(130, 225, 255, 0.08) 0%,
+    rgba(39, 178, 224, 0.22) 40%,
+    rgba(0, 115, 180, 0.38) 100%
+  );
+  border-top: 1.5px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    inset 0 14px 28px rgba(255, 255, 255, 0.3),
+    0 -10px 30px rgba(100, 210, 255, 0.2);
+}
+
+.water-shine {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(110deg, transparent 0 70px, rgba(255,255,255,.24) 72px, transparent 78px 130px);
+  animation: waterShimmer 8s linear infinite;
+}
+@keyframes waterShimmer {
+  from { background-position: 0 0; }
+  to   { background-position: 300px 0; }
+}
+
+.water-ripple {
+  position: absolute; width: 110px; height: 16px;
+  border-top: 2.5px solid rgba(255, 255, 255, 0.85); border-radius: 50%;
+  animation: rippleMove 4s ease-in-out infinite;
+}
+.ripple-one { top: 35px; left: 28%; }
+.ripple-two { top: 95px; right: 22%; animation-delay: -2s; }
+
+@keyframes rippleMove {
+  0%, 100% { transform: scaleX(.6); opacity: .25; }
+  50%      { transform: scaleX(1.5); opacity: .95; }
+}
+
+/* ---------- WATER PLANTS & KOI FISH ---------- */
+.water-plant {
+  position: absolute; bottom: 0; width: 16px; height: 95px; border-radius: 50% 50% 0 0;
+  background: linear-gradient(180deg, #b9f798 0%, #5cc83a 50%, #1a6b0c 100%);
+  box-shadow: 0 0 12px rgba(126, 217, 87, .5);
+  transform-origin: bottom center;
+  animation: plantSway 4.5s ease-in-out infinite alternate;
+}
+.plant-one { left: 16%; height: 90px; animation-duration: 4s; }
+.plant-two { right: 24%; height: 110px; animation-duration: 5.2s; animation-delay: -2s; }
+
+@keyframes plantSway {
+  0%   { transform: rotate(-8deg) skewX(-4deg); }
+  100% { transform: rotate(10deg) skewX(6deg); }
+}
+
+/* =========================================================
+   IKAN KOI BERENANG MAJU (Kepala di depan, ekor di belakang)
+   ========================================================= */
+.koi {
+  position: absolute;
+  display: flex;
+  flex-direction: row-reverse; /* Kepala menghadap ke depan (kanan), ekor di belakang (kiri) */
+  align-items: center;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 14px rgba(0, 90, 160, 0.45));
+  will-change: transform;
+}
+
+/* Koi 1: Berenang maju meluncur ke kanan */
+.koi-one {
+  bottom: 55px;
+  left: 0;
+  animation: koiSwimForward 15s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Koi 2: Berenang maju ke kiri (balik arah dengan scaleX(-1) kepala tetap di depan) */
+.koi-two {
+  bottom: 105px;
+  right: 0;
+  transform: scale(.8) scaleX(-1);
+  animation: koiSwimBackward 20s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: -6s;
+}
+
+/* Koi 3: Berenang maju ke kanan dengan jalur meliuk anggun */
+.koi-three {
+  bottom: 25px;
+  left: 0;
+  transform: scale(.9);
+  animation: koiSwimForward 18s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: -9s;
+}
+
+/* Tubuh ikan koi mengkilap khas Aero Gel */
+.koi-body {
+  width: 50px;
+  height: 20px;
+  border-radius: 40% 50% 50% 40%;
+  background: linear-gradient(90deg, #ffffff 0%, #ff9800 45%, #ff4d00 85%, #d83100 100%);
+  box-shadow:
+    inset 0 3px 6px rgba(255, 255, 255, 0.85),
+    inset 0 -3px 5px rgba(180, 40, 0, 0.35),
+    0 3px 10px rgba(255, 80, 0, 0.5);
+  position: relative;
+  animation: bodyWiggle .5s ease-in-out infinite alternate;
+}
+
+.koi-two .koi-body {
+  background: linear-gradient(90deg, #ffffff 0%, #ffd043 40%, #ff9800 85%, #e65100 100%);
+  box-shadow:
+    inset 0 3px 6px rgba(255, 255, 255, 0.9),
+    0 3px 10px rgba(255, 170, 0, 0.5);
+}
+
+.koi-three .koi-body {
+  background: linear-gradient(90deg, #ffeedd 0%, #ffffff 40%, #ff2a2a 80%, #b30000 100%);
+  box-shadow:
+    inset 0 3px 6px rgba(255, 255, 255, 0.9),
+    0 3px 10px rgba(255, 40, 40, 0.5);
+}
+
+/* Ekor ikan di belakang (mengibas aktif saat maju) */
+.koi-tail {
+  width: 20px;
+  height: 16px;
+  margin-right: -6px; /* Menempel di belakang tubuh */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 120, 40, 0.85));
+  clip-path: polygon(100% 40%, 0 0, 25% 50%, 0 100%, 100% 60%);
+  transform-origin: right center;
+  animation: tailWiggle .4s ease-in-out infinite alternate;
+}
+
+/* Sirip samping mengepak maju */
+.koi-fin {
+  position: absolute;
+  top: -5px;
+  left: 20px;
+  width: 13px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  transform: rotate(25deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  animation: finFlap .5s ease-in-out infinite alternate;
+}
+
+/* Mata ikan di depan (sisi kanan kepala) */
+.koi-eye {
+  position: absolute;
+  top: 5px;
+  right: 7px; /* Mata berada di ujung kepala ikan */
+  left: auto;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #111;
+  box-shadow: 0 0 2px #fff, 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+/* Gelembung renang halus di depan mulut ikan */
+.koi::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 4px #b8f5ff;
+  animation: fishBubble 1.4s ease-out infinite;
+}
+
+@keyframes tailWiggle {
+  from { transform: rotate(-24deg); }
+  to   { transform: rotate(24deg); }
+}
+
+@keyframes bodyWiggle {
+  from { transform: skewY(-2deg); }
+  to   { transform: skewY(2deg); }
+}
+
+@keyframes finFlap {
+  from { transform: rotate(15deg) scaleY(.85); }
+  to   { transform: rotate(35deg) scaleY(1.15); }
+}
+
+@keyframes fishBubble {
+  0%   { transform: translate(0, 0) scale(.4); opacity: 0; }
+  30%  { opacity: .85; }
+  100% { transform: translate(12px, -18px) scale(1.4); opacity: 0; }
+}
+
+/* Animasi berenang MAJU ke kanan melintasi layar */
+@keyframes koiSwimForward {
+  0% {
+    transform: translate3d(-140px, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  25% {
+    transform: translate3d(28vw, -18px, 0) rotate(-3deg);
+  }
+  50% {
+    transform: translate3d(55vw, 10px, 0) rotate(4deg);
+  }
+  75% {
+    transform: translate3d(80vw, -12px, 0) rotate(-2deg);
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(calc(100vw + 140px), 6px, 0) rotate(2deg);
+    opacity: 0;
+  }
+}
+
+/* Animasi berenang MAJU ke kiri melintasi layar */
+@keyframes koiSwimBackward {
+  0% {
+    transform: scale(.8) scaleX(-1) translate3d(-140px, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  30% {
+    transform: scale(.8) scaleX(-1) translate3d(30vw, 14px, 0) rotate(3deg);
+  }
+  55% {
+    transform: scale(.8) scaleX(-1) translate3d(58vw, -12px, 0) rotate(-4deg);
+  }
+  80% {
+    transform: scale(.8) scaleX(-1) translate3d(82vw, 8px, 0) rotate(2deg);
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(.8) scaleX(-1) translate3d(calc(100vw + 140px), -6px, 0) rotate(-2deg);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   DARK MODE (NIGHT SKY FRUTIGER AERO)
+   ========================================================= */
+body.dark-mode {
+  color: #e0f4ff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .8);
+  background:
+    radial-gradient(ellipse 130% 35% at 50% 110%, #0d4a22 0%, rgba(13, 74, 34, 0) 70%),
+    linear-gradient(180deg, #041226 0%, #0a2544 50%, #0d3861 100%);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4 {
+  color: #c9efff;
+  text-shadow: 0 0 12px rgba(94, 200, 242, .45), 0 2px 4px rgba(0, 0, 0, .6);
+}
+
+body.dark-mode .hero__title .title,
+body.dark-mode .hero__role,
+body.dark-mode .edu-item__school {
+  color: #5ec8f2;
+}
+
+body.dark-mode .biodata-card,
+body.dark-mode .about__panel,
+body.dark-mode .edu-item,
+body.dark-mode .aboutme-grid,
+body.dark-mode .career-card,
+body.dark-mode .hobi-card,
+body.dark-mode .skill-card,
+body.dark-mode .contact-form,
+body.dark-mode .contact-info,
+body.dark-mode .eyebrow {
+  background: linear-gradient(180deg, rgba(10, 37, 68, .75) 0%, rgba(6, 22, 42, .65) 100%);
+  border-color: rgba(94, 200, 242, .3);
+  box-shadow: 0 12px 30px rgba(0, 10, 25, .6), inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+
+body.dark-mode .navbar {
+  background: linear-gradient(180deg, rgba(8, 28, 52, .88) 0%, rgba(4, 18, 34, .75) 100%);
+  border-bottom-color: rgba(94, 200, 242, .3);
+  box-shadow: 0 6px 22px rgba(0, 10, 25, .5), inset 0 1px 0 rgba(255, 255, 255, .15);
+}
+
+body.dark-mode .logo { color: #c9efff; }
+body.dark-mode .nav__link { color: #b8e4fc; }
+body.dark-mode .nav__link:hover { background: rgba(255, 255, 255, .15); color: #fff; }
+
+body.dark-mode .theme-toggle {
+  background: linear-gradient(180deg, rgba(20, 60, 100, .8), rgba(10, 35, 65, .9));
+  border-color: rgba(94, 200, 242, .4);
+}
+
+body.dark-mode .biodata-table th {
+  color: #7fdcff;
+  border-bottom-color: rgba(255, 255, 255, .15);
+}
+body.dark-mode .biodata-table td {
+  border-bottom-color: rgba(255, 255, 255, .15);
+}
+
+body.dark-mode .nature-sun {
+  background: radial-gradient(circle, rgba(255, 255, 255, .98) 0%, rgba(200, 235, 255, .8) 30%, rgba(100, 190, 255, .25) 60%, transparent 75%);
+  box-shadow: 0 0 35px rgba(180, 230, 255, .6);
+}
+
+body.dark-mode .nature-cloud {
+  background: linear-gradient(180deg, rgba(160, 205, 240, .35), rgba(40, 80, 120, .2));
+  box-shadow: inset 0 4px 10px rgba(255, 255, 255, .3), 0 8px 20px rgba(0, 0, 0, .4);
+}
+
+body.dark-mode .aero-city {
+  opacity: .95;
+  filter: drop-shadow(0 0 15px rgba(26, 167, 224, .35));
+}
+
+body.dark-mode .city-skyline span {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 17px, rgba(255, 255, 180, .5) 18px 20px),
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(140, 225, 255, .5) 24px 26px),
+    linear-gradient(135deg, rgba(18, 55, 95, .8), rgba(8, 30, 56, .9));
+  border-color: rgba(100, 200, 255, .4);
+  box-shadow: 0 0 20px rgba(26, 167, 224, .4), inset 0 0 15px rgba(255, 255, 200, .2);
+}
+
+body.dark-mode .aero-pond {
+  background: linear-gradient(180deg, rgba(8, 40, 70, .2), rgba(4, 25, 48, .6) 50%, rgba(2, 14, 28, .85) 100%);
+  border-top-color: rgba(100, 210, 255, .35);
+}
+
+/* ---------- RESPONSIF ---------- */
+@media (max-width: 860px) {
+  .hero__grid, .biodata-grid, .contact__grid { grid-template-columns: 1fr; }
+  .title-block { order: -1; }
+  .edu-item { grid-template-columns: 1fr; gap: .5rem; }
+  .corner-tl, .corner-br { width: 80px; height: 80px; }
+}
+
+@media (max-width: 768px) {
+  .menu-toggle { display: inline-grid; place-items: center; }
+  .navbar__inner { flex-wrap: wrap; }
+  .nav { display: none; order: 3; width: 100%; background: var(--glass); border: var(--edge); border-radius: 1.2rem; box-shadow: var(--lift); padding: .5rem; }
+  .nav.is-open { display: block; }
+  .nav__list { flex-direction: column; }
+  .nature-sun { width: 110px; height: 110px; }
+  .nature-cloud { transform: scale(.65); }
+  .nature-leaf { transform-origin: center; scale: .75; }
+  .leaf-five, .leaf-six { display: none; }
+  .aero-city { height: 180px; }
+  .city-skyline { height: 140px; }
+  .aero-pond { height: 120px; }
+}
+
+/* ---------- AKSESIBILITAS: kurangi gerak ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important; transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .btn::after, .back-to-top::after, .nav__link::after, .biodata-card::after, .about__panel::after, .edu-item::after,
+  .aboutme-grid::after, .career-card::after, .hobi-card::after, .skill-card::after, .contact-form::after, .contact-info::after { display: none; }
+  [data-reveal] { opacity: 1; translate: none; }
+  .bar span.is-visible { width: var(--value); }
+  .nature-layer *, .nature-layer *::before, .nature-layer *::after { animation: none !important; }
+}
